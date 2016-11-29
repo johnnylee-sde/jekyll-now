@@ -22,7 +22,7 @@ int secs = Convert2ByteToInt( &dt[11] ) * 3600 +
            Convert2ByteToInt( &dt[17] );
 ```
 
-Cost is:
+Estimated cost is:
 
 `Convert2ByteToInt` function cost:
 
@@ -40,7 +40,7 @@ main code cost:
  
 Total: 5 ops, 2 Multiplies
  
-Total cost is 3 x (5 ops, 1 Multiply) + (5 ops, 2 Multiplies) = 20 ops, 5 Multiplies
+Estimated total cost is 3 x (5 ops, 1 Multiply) + (5 ops, 2 Multiplies) = 20 ops, 5 Multiplies
 
 ----
 
@@ -67,14 +67,14 @@ sum = (sum >> 48) + ((sum & 0x000000003F00001F) * 0xE1000003C) >> 24;
 int secs = (int)(sum) & 0x1FFFF;
 ```
 
-Cost is:
+Estimated cost is:
 
 - 1 Load, 1 Bitwise AND
 - 1 Multiply, 1 Shift right
 - 2 Shift right, 1 Add, 1 Bitwise AND, 1 Multiply
 - 1 Bitwise AND
 
-Total cost is 8 ops, 2 Multiplies
+Estimated total cost is 8 ops, 2 Multiplies
 
 Algorithm     | Ops | Multiplies
 --------------|-----|-----------
