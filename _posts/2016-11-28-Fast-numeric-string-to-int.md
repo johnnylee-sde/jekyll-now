@@ -12,7 +12,7 @@ Typical code:
 ```
 // given num[] - ASCII chars containing decimal digits 0-9
 int sum = 0;
-for (int i = 7; i >= 0; i--)
+for (int i = 0; i <= 7; i++)
 {
 	sum = (sum * 10) + (num[i] - '0');
 }
@@ -22,14 +22,14 @@ One way to speed up this code would be to unroll the loop:
 
 ```
 int sum;
-sum = (num[7] - '0') * 10000000 +
-      (num[6] - '0') * 1000000 +
-      (num[5] - '0') * 100000 +
-      (num[4] - '0') * 10000 +
-      (num[3] - '0') * 1000 +
-      (num[2] - '0') * 100 +
-      (num[1] - '0') * 10 +
-      (num[0] - '0');
+sum = (num[0] - '0') * 10000000 +
+      (num[1] - '0') * 1000000 +
+      (num[2] - '0') * 100000 +
+      (num[3] - '0') * 10000 +
+      (num[4] - '0') * 1000 +
+      (num[5] - '0') * 100 +
+      (num[6] - '0') * 10 +
+      (num[7] - '0');
 ```
 
 Either solution is O(N) in execution speed, where N is the number of numeric ASCII digits.
