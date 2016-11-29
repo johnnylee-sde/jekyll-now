@@ -71,7 +71,7 @@ Cost is:
 
 - 1 Load, 1 Bitwise AND
 - 1 Multiply, 1 Shift right
-- 2 Shift right, 1 Bitwise AND, 1 Multiply
+- 2 Shift right, 1 Add, 1 Bitwise AND, 1 Multiply
 - 1 Bitwise AND
 
 Total cost is 8 ops, 2 Multiplies
