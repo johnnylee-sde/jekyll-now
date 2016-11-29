@@ -15,7 +15,7 @@ Typical code:
 int sum = 0;
 for (int i = 7; i >= 0; i--)
 {
-	sum = (sum*10)+(num[i] - '0');
+	sum = (sum * 10) + (num[i] - '0');
 }
 ```
 
