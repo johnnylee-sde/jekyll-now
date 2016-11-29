@@ -3,8 +3,6 @@ layout: post
 title: Fast numeric string to int
 ---
 
-# Fast numeric string to int
-
 I was working on code to convert a string of ASCII numbers to an integer.
 
 In one code execution hotspot, the case involved code that had to convert 8 decimal number ASCII characters to a number, the result would be an integer in the range 0 - 99,999,999.
