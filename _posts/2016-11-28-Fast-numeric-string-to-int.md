@@ -42,7 +42,7 @@ For the unrolled loop code, we have
 - 8 subtracts, 7 adds, 8 adds to index into num array
 - 7 multiplies
 
-Let's assume all the operations **except** multiplies are the same cost. Multiplies cost more.
+Let's assume all the operations **except** multiplies are the same cost. Multiplies usually cost more.
 
 Unrolled loop algorithm cost total = 31 ops and 7 multiplies.
 
@@ -197,7 +197,7 @@ Recall our high school linear algebra:
 5x + 3x + x = 9x
 ```
 
-So the above multiplication can be rewritten as
+So the above multiplication by 2561 can be rewritten as
 
 ```
 tmp = (str.a & 0x0F0F0F0F0F0F0F0F)
@@ -262,6 +262,6 @@ Algorithm     | Ops | Multiplies
 --------------|-----|-----------
 Unrolled loop | 31  |    7
 SIMD          | 14  |    3
-super-SIMD    |  7  |    3
+SIMD 2        |  7  |    3
 
 
