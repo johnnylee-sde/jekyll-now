@@ -250,6 +250,7 @@ str.a = (str.a & 0x0000FFFF0000FFFF) * 42949672960001 >> 32;
 ```
 
 Cost is:
+
 - 1 load
 - 3 bitwise ANDs
 - 3 right shifts
