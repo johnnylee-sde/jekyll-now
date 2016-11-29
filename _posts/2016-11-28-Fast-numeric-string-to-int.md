@@ -147,7 +147,7 @@ sum = ((sum & 0x3FFF)             * 10000) +
 
 The solution is O(lg N) in execution speed, where N is the number of numeric ASCII digits.
 
-Final algorithm cost is
+Final algorithm estimated cost is
 
 - 1 load
 - 7 bitwise ANDs
@@ -249,7 +249,7 @@ sum = (sum & 0x00FF00FF00FF00FF) * 6553601 >> 16;
 sum = (sum & 0x0000FFFF0000FFFF) * 42949672960001 >> 32;
 ```
 
-Cost is:
+Estimated cost is:
 
 - 1 load
 - 3 bitwise ANDs
