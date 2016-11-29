@@ -39,6 +39,7 @@ Either solution is O(N) in execution speed, where N is the number of numeric ASC
 We can estimate the cost of the code by calculating the number of loads, adds/subtracts, shifts, and multiplies.
 
 For the unrolled loop code, we have
+
 - 8 loads
 - 8 subtracts, 7 adds, 8 adds to index into num array
 - 7 multiplies
@@ -50,12 +51,12 @@ Unrolled loop algorithm cost total = 31 ops and 7 multiplies.
 ---
 But to go faster you have to think **bigger**.
 
-Now that 64-bit CPUs and OSes are common, we can start unleashing the full power of the 64-bit CPU registers on the problem.
+Now that 64-bit CPUs and OSes are common, we can unleash the full power of 64-bit CPU registers on the problem.
 
 ## Concept #1
 In the ASCII character set, number characters ('0'-'9') are in the range 0x30 - 0x39 (48-57).
 
-If we bitwise-AND each ASCII number character with 0x0F, we convert the ASCII number character to its corresponding decimal number for that number character. 
+If we bitwise-AND each number ASCII character with 0x0F, we convert the number ASCII character to its corresponding decimal number for that number character. 
 
 '0' - '9' == 0x30 - 0x39, (0x30 - 0x39) & 0x0F => 0x0 - 0x9
 
@@ -79,7 +80,7 @@ sum == 0x0102030405060708
 ## Concept #2
 Let's rewrite the above result so we can distinguish the high digit from the low digit of a number.
 
-Due to the load order of little-endian Intel CPUs, the high digit is stored in the byte below the low digit.
+Due to the load order of little-endian Intel CPUs, the high digit is stored in the byte below/right of the low digit.
 
 ```
 // given the string "ZzYyXxWw",
@@ -165,6 +166,7 @@ SIMD          | 14  |    3
 
 
 ----------
+
 ## Prior work
 
 Off to the web to see if someone has developed anything similar or better to this algorithm.
