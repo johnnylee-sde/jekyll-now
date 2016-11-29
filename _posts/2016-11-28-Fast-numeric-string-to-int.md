@@ -243,10 +243,10 @@ str.a = (str.a & 0x0000FFFF0000FFFF) * 42949672960001 >> 32;
 Let's calculate the algorithm cost:
 
 ```
-str.a = *(long long *)num;
-str.a = (str.a & 0x0F0F0F0F0F0F0F0F) * 2561 >> 8;
-str.a = (str.a & 0x00FF00FF00FF00FF) * 6553601 >> 16;
-str.a = (str.a & 0x0000FFFF0000FFFF) * 42949672960001 >> 32;
+sum = *(long long *)num;
+sum = (sum & 0x0F0F0F0F0F0F0F0F) * 2561 >> 8;
+sum = (sum & 0x00FF00FF00FF00FF) * 6553601 >> 16;
+sum = (sum & 0x0000FFFF0000FFFF) * 42949672960001 >> 32;
 ```
 
 Cost is:
