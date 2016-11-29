@@ -3,7 +3,7 @@ layout: post
 title: Fast numeric string to int
 ---
 
-#Fast numeric string to int
+# Fast numeric string to int
 
 I was working on code to convert a string of ASCII numbers to an integer.
 
@@ -12,7 +12,7 @@ In one code execution hotspot, the case involved code that had to convert 8 deci
 Typical code:
 
 ```
-// given num[] - array of ASCII chars containing decimal digits 0-9
+// given num[] - ASCII chars containing decimal digits 0-9
 int sum = 0;
 for (int i = 7; i >= 0; i--)
 {
@@ -62,25 +62,31 @@ If we bitwise-AND each ASCII number character with 0x0F, we convert the ASCII nu
 Now if we load an 8 digit numeric string into a 64-bit CPU register,  on an Intel CPU (little-endian), we'll see the following:
 
 ```
-// given the string "87654321", on little-endian Intel CPUs we see the reversed:
+// given the string "87654321", 
+// on little-endian Intel CPUs we see the reversed:
 sum = 0x3132333435363738
 ```
+
 Doing a bitwise-AND of the value with 0x0F0F0F0F0F0F0F0F will give us the decimal digits involved:
 
 ```
-// given the string "87654321", bitwise-AND with 0x0F0F0F0F0F0F0F0F
+// given the string "87654321",
+// bitwise-AND with 0x0F0F0F0F0F0F0F0F
 sum = *((long long *)num) & 0x0F0F0F0F0F0F0F0F;
 sum == 0x0102030405060708
 ```
+
 ## Concept #2
 Let's rewrite the above result so we can distinguish the high digit from the low digit of a number.
 
 Due to the load order of little-endian Intel CPUs, the high digit is stored in the byte below the low digit.
 
 ```
-// given the string "ZzYyXxWw", bitwise-AND with 0x0F0F0F0F0F0F0F0F
+// given the string "ZzYyXxWw",
+// bitwise-AND with 0x0F0F0F0F0F0F0F0F
 sum = 0x0w0W0x0X0y0Y0z0Z
 ```
+
 We want to combine the low digit in the ones position and the high digit in the tens position into one number.
 
 - Bitwise-AND ALL the high digits and multiply the high digits by 10 to get them into the tens position
@@ -88,11 +94,14 @@ We want to combine the low digit in the ones position and the high digit in the 
 - Add both of them together.
 
 ```
-// isolate the high digit, multiply by 10, shift over the low digit and add in
-sum = ((sum & 0x000F000F000F000F) * 10) + ((sum >> 8) & 0x000F000F000F000F);
+// isolate the high digit, multiply by 10,
+// shift over the low digit and add in
+sum = ((sum & 0x000F000F000F000F) * 10) + 
+        ((sum >> 8) & 0x000F000F000F000F);
 
 // now we have the following
-// where [Nn] represents the decimal number Nn in a byte, 0 <= Nn <= 99
+// where [Nn] represents decimal number Nn in a byte, 
+// 0 <= Nn <= 99
 // N represents the decimal digit in the tens position
 // n represents the decimal digit in the ones position
 sum = 0x00[Ww]00[Xx]00[Yy]00[Zz];
@@ -102,9 +111,10 @@ Extend the concept to combine the numbers into larger groups.
 
 ```
 // numbers are in range 0-99 (0x0-0x63) now
-// - isolate the high number (use 0x7F since that encompasses number range)
-// - multiply by 100 to move high number into thousands & hundreds position
-// - shift the low number over to tens and ones position and isolate
+// - isolate high number (use 0x7F which encompasses number range)
+// - multiply by 100 to move high number into
+//   thousands & hundreds position
+// - shift low number over to tens and ones position
 // - add the two numbers together
 sum = ((sum & 0x0000007F0000007F) * 100) + ((sum >> 16) & 0x0000007F0000007F);
 ```
@@ -115,26 +125,31 @@ Once more, extend concept.
 
 ```
 // numbers are in range 0-9,999 (0x0-0x270F) now
-// isolate the high number (use 0x3FFF since that covers number range)
+// isolate high number (use 0x3FFF which covers number range)
 //   then multiply by 10000 to move high number into position
-// shift the low number over and isolate
+// shift low number over and isolate
 // add the two numbers together
 sum = ((sum & 0x3FFF) * 10000) + ((sum >> 32) & 0x3FFF);
 ```
 
-### Final algorithm
+## Final algorithm
 
 ```
-// given num[] - array of ASCII chars containing decimal digits 0-9
+// given num[] - ASCII chars containing decimal digits 0-9
 long long sum;
 sum = *((long long*)num) & 0x0F0F0F0F0F0F0F0F;
-sum = ((sum & 0x000F000F000F000F) * 10 )   + ((sum >>  8) & 0x000F000F000F000F);
-sum = ((sum & 0x0000007F0000007F) * 100)   + ((sum >> 16) & 0x0000007F0000007F);
-sum = ((sum & 0x3FFF)             * 10000) + ((sum >> 32) & 0x3FFF);
+sum = ((sum & 0x000F000F000F000F) * 10 )   +
+          ((sum >>  8) & 0x000F000F000F000F);
+sum = ((sum & 0x0000007F0000007F) * 100)   +
+          ((sum >> 16) & 0x0000007F0000007F);
+sum = ((sum & 0x3FFF)             * 10000) +
+          ((sum >> 32) & 0x3FFF);
 ```
+
 The solution is O(lg N) in execution speed, where N is the number of numeric ASCII digits.
 
 Final algorithm cost is
+
 - 1 load
 - 7 bitwise ANDs
 - 3 right shifts
@@ -150,7 +165,7 @@ SIMD          | 14  |    3
 
 
 ----------
-#Prior work
+## Prior work
 
 Off to the web to see if someone has developed anything similar or better to this algorithm.
 
@@ -165,6 +180,7 @@ str.a = (str.a & 0x0F0F0F0F0F0F0F0F) * 2561 >> 8;
 str.a = (str.a & 0x00FF00FF00FF00FF) * 6553601 >> 16;
 str.a = (str.a & 0x0000FFFF0000FFFF) * 42949672960001 >> 32;
 ```
+
 The hex constants used in the bitwise-AND operations are similar to my algorithm and serve the same purpose.
 
 But **what are those  magic constants used in the multiplication**?
@@ -174,11 +190,13 @@ Let's take a look at the first statement:
 ```
 str.a = (str.a & 0x0F0F0F0F0F0F0F0F) * 2561 >> 8;
 ```
+
 Recall our high school linear algebra:
 
 ```
 5x + 3x + x = 9x
 ```
+
 So the above multiplication can be rewritten as
 
 ```
@@ -188,6 +206,7 @@ tmp2 = (((256 * 10) * tmp) + 1 * tmp);
      == ((10 * tmp) << 8) + (1 * tmp);
 str.a = tmp2 >> 8;
 ```
+
 **So one multiplication has the same effect as 1 multiply, 1 left shift, and 1 add!!!**
 
 Remember the load order on little-endian Intel CPUs.
@@ -195,6 +214,7 @@ Remember the load order on little-endian Intel CPUs.
 ```
 sum = 0x0w0W0x0X0y0Y0z0Z
 ```
+
 So the statement `(10 * tmp) << 8` is moving the high digit into the tens position and then shifting the result into the same byte position as the low digits.
 
 The `+ (1 * tmp)` expression adds the low digits to the above high digits expression.
@@ -214,10 +234,9 @@ str.a = (str.a & 0x00FF00FF00FF00FF) * 6553601 >> 16;
 
 // number groups are in range 0-9,999 now
 // tmp2 = (str.a & 0x0000FFFF0000FFFF);
-// str.a = ( ((4294967296 * 10000) * tmp2) + (1 * tmp2) ) >> 32;
+// str.a = (((4294967296 * 10000) * tmp2) + (1 * tmp2)) >> 32;
 //       == ( ((10000 * tmp2) << 32) + (1 * tmp2) ) >> 32;
 str.a = (str.a & 0x0000FFFF0000FFFF) * 42949672960001 >> 32;
-
 ```
 
 ----------
@@ -234,7 +253,8 @@ Cost is:
 - 1 load
 - 3 bitwise ANDs
 - 3 right shifts
-- 3 multiplies.
+- 3 multiplies
+
 Assuming equal cost of non-multiply operations results in 7 ops and 3 multiplies!
 
 Algorithm     | Ops | Multiplies
@@ -242,4 +262,5 @@ Algorithm     | Ops | Multiplies
 Unrolled loop | 31  |    7
 SIMD          | 14  |    3
 super-SIMD    |  7  |    3
+
 
