@@ -1,3 +1,8 @@
+---
+layout: post
+title: Fast numeric string to int
+---
+
 #Fast numeric string to int
 
 I was working on code to convert a string of ASCII numbers to an integer.
