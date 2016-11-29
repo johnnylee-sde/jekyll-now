@@ -173,7 +173,7 @@ First search result leads to <http://govnokod.ru/13461>
 
 The first response's solution resembles my algorithm.
 
-The third response's solution is impressive:
+The third response's solution by a user named bormand is impressive:
 
 ```
 str.a = (str.a & 0x0F0F0F0F0F0F0F0F) * 2561 >> 8;
