@@ -119,7 +119,21 @@ table tr {
 }
 
 table {
-    border-color: grey;
+    border-collapse: collapse;
+    border-spacing: 0;
+    border: 1px solid grey;
+}
+
+th {
+    font-weight: bold;
+    padding: 5px;
+    padding-right: 5px;
+}
+
+td {
+    border: 1px solid grey;
+    padding-left: 10px;
+    padding-right: 10px;
 }
 
 // Fixes images in popup boxes from Google Translate
