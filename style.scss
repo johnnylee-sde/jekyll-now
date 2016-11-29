@@ -110,6 +110,18 @@ img {
   max-width: 100%;
 }
 
+table tr:nth-child(2n) {
+    background-color: #f8f8f8;
+}
+table tr {
+    background-color: #fff;
+    border-top: 1px solid #ccc;
+}
+
+table {
+    border-color: grey;
+}
+
 // Fixes images in popup boxes from Google Translate
 .gmnoprint img {
   max-width: none;
