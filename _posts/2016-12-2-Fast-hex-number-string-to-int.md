@@ -28,7 +28,7 @@ typedef unsigned long long ULL;
 ULL n = (*(ULL *)(buffer)) & 0x4F4F4F4F4F4F4F4Full;
 
 ULL alphahex = (ULL)(n & 0x4040404040404040ull);
-// ULL  nine = ((hex >> 3) + (hex >> 6));
+// ULL  nine = ((alphahex >> 3) + (alphahex >> 6));
 // ULL n0 = alphahex == 0 ? n : nine + (n & ~alphahex);
 ULL n0 = alphahex == 0 ? n 
                        : ((alphahex >> 3) + (alphahex >> 6)) + (n & ~alphahex);
