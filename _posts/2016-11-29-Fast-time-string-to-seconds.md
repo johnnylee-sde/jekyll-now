@@ -9,7 +9,7 @@ The 24-hour time format is `HH:MM:SS`.
 
 Code was similar to the following:
 
-```
+```c
 int Convert2ByteToInt( char *s )
 {
     return (s[0] - '0') * 10 + (s[1] - '0');
@@ -46,7 +46,7 @@ Estimated total cost is 3 x (5 ops, 1 Multiply) + (5 ops, 2 Multiplies) = 20 ops
 
 Using the techniques from yesterday's post [Fast numeric string to int]({{ site.baseurl }}{% post_url 2016-11-28-Fast-numeric-string-to-int %}), we can write a faster version.
 
-```
+```c
 long long sum;
 
 // 24 hour time string of form: "12:34:56"
