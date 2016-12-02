@@ -28,10 +28,10 @@ typedef unsigned long long ULL;
 ULL n = (*(ULL *)(buffer)) & 0x4F4F4F4F4F4F4F4Full;
 
 ULL alphahex = (ULL)(n & 0x4040404040404040ull);
-// ULL  nine = ((alphahex >> 3) + (alphahex >> 6));
-// ULL n0 = alphahex == 0 ? n : nine + (n & ~alphahex);
+// ULL  nine = (alphahex >> 6) * 9;
+// ULL n0 = alphahex == 0 ? n : nine + (n ^ alphahex);
 ULL n0 = alphahex == 0 ? n 
-                       : ((alphahex >> 3) + (alphahex >> 6)) + (n & ~alphahex);
+                       : ((alphahex >> 6) * 9) + (n ^ alphahex);
 // 0x1001 == 4097 == 256 * 16 + 1
 ULL n1 = n0 * 0x1001 >> 8;
 // 0x1000001 == 16777217 == 65536 * 256 + 1
