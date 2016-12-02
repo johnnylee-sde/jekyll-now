@@ -7,7 +7,7 @@ Extending [Fast numeric string to int]({{ site.baseurl }}{% post_url 2016-11-28-
 
 The main wrinkle is that the range of digits extends from the original `'0'-'9'` (0x30-0x39) to `'0'-'9', 'A'-'F', 'a'-'f'` (0x30-0x39, 0x41-0x46, 0x61-0x66)
 
-The high alphabetic hexadecimal digits (`'A'-'F', 'a'-'f'  0x41-0x46, 0x61-0x66) are not continuous with the lower decimal digits (`'0'-'9'` 0x30-0x39).
+The high alphabetic hexadecimal digits (`'A'-'F', 'a'-'f'`  0x41-0x46, 0x61-0x66) are not continuous with the lower decimal digits (`'0'-'9'` 0x30-0x39).
 
 If the code masks off the high nibble as it did when processing numeric strings, the code would be left with hexadecimal digits in the range 0x01-0x06, when it should be in the range 0x0A-0x0F.
 
