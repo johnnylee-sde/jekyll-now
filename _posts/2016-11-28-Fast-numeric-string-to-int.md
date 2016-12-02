@@ -9,7 +9,7 @@ In one code execution hotspot, the case involved code that had to convert 8 deci
 
 Typical code:
 
-```
+```c
 // given num[] - ASCII chars containing decimal digits 0-9
 int sum = 0;
 for (int i = 0; i <= 7; i++)
@@ -20,7 +20,7 @@ for (int i = 0; i <= 7; i++)
 
 One way to speed up this code would be to unroll the loop:
 
-```
+```c
 int sum;
 sum = (num[0] - '0') * 10000000 +
       (num[1] - '0') * 1000000 +
@@ -60,7 +60,7 @@ If we bitwise-AND each number ASCII character with 0x0F, we convert the number A
 
 Now if we load an 8 digit numeric string into a 64-bit CPU register,  on an Intel CPU (little-endian), we'll see the following:
 
-```
+```c
 // given the string "87654321", 
 // on little-endian Intel CPUs we see the reversed:
 sum = 0x3132333435363738
@@ -68,7 +68,7 @@ sum = 0x3132333435363738
 
 Doing a bitwise-AND of the value with 0x0F0F0F0F0F0F0F0F will give us the decimal digits involved:
 
-```
+```c
 // given the string "87654321",
 // bitwise-AND with 0x0F0F0F0F0F0F0F0F
 sum = *((long long *)num) & 0x0F0F0F0F0F0F0F0F;
@@ -80,7 +80,7 @@ Let's rewrite the above result so we can distinguish the high digit from the low
 
 Due to the load order of little-endian Intel CPUs, the high digit is stored in the byte below/right of the low digit.
 
-```
+```c
 // given the string "ZzYyXxWw",
 // bitwise-AND with 0x0F0F0F0F0F0F0F0F
 sum = 0x0w0W0x0X0y0Y0z0Z
@@ -92,7 +92,7 @@ We want to combine the low digit in the ones position and the high digit in the 
 - Right shift the low digits into the same spot as the high digits - no need to multiply since the low digits are already in the ones position
 - Add both of them together.
 
-```
+```c
 // isolate the high digit, multiply by 10,
 // shift over the low digit and add in
 sum = ((sum & 0x000F000F000F000F) * 10) + 
@@ -108,7 +108,7 @@ sum = 0x00[Ww]00[Xx]00[Yy]00[Zz];
 
 Extend the concept to combine the numbers into larger groups.
 
-```
+```c
 // numbers are in range 0-99 (0x0-0x63) now
 // - isolate high number (use 0x7F which encompasses number range)
 // - multiply by 100 to move high number into
@@ -122,7 +122,7 @@ There are now two groups of numbers,  in the range 0-9,999.
 
 Once more, extend concept.
 
-```
+```c
 // numbers are in range 0-9,999 (0x0-0x270F) now
 // isolate high number (use 0x3FFF which covers number range)
 //   then multiply by 10000 to move high number into position
@@ -133,7 +133,7 @@ sum = ((sum & 0x3FFF) * 10000) + ((sum >> 32) & 0x3FFF);
 
 ## Final algorithm
 
-```
+```c
 // given num[] - ASCII chars containing decimal digits 0-9
 long long sum;
 sum = *((long long*)num) & 0x0F0F0F0F0F0F0F0F;
@@ -175,7 +175,7 @@ The first response's solution resembles my algorithm.
 
 The third response's solution by a user named bormand is impressive:
 
-```
+```c
 str.a = (str.a & 0x0F0F0F0F0F0F0F0F) * 2561 >> 8;
 str.a = (str.a & 0x00FF00FF00FF00FF) * 6553601 >> 16;
 str.a = (str.a & 0x0000FFFF0000FFFF) * 42949672960001 >> 32;
@@ -187,19 +187,19 @@ But **what are those  magic constants used in the multiplication**?
 
 Let's take a look at the first statement:
 
-```
+```c
 str.a = (str.a & 0x0F0F0F0F0F0F0F0F) * 2561 >> 8;
 ```
 
 Recall our high school linear algebra:
 
-```
+```c
 5x + 3x + x = 9x
 ```
 
 So the above multiplication by 2561 can be rewritten as
 
-```
+```c
 tmp = (str.a & 0x0F0F0F0F0F0F0F0F)
 tmp2 = (((256 * 10) * tmp) + 1 * tmp);
      // multiply by 256 is the same as left shift by 8
@@ -211,7 +211,7 @@ str.a = tmp2 >> 8;
 
 Remember the load order on little-endian Intel CPUs.
 
-```
+```c
 sum = 0x0w0W0x0X0y0Y0z0Z
 ```
 
@@ -225,7 +225,7 @@ The result is the high and low digits combined in the tens and ones position in 
 
 The two other statements combine the ever-larger groups of numbers together.
 
-```
+```c
 // number groups are in range 0-99 now
 // tmp1 = (str.a & 0x00FF00FF00FF00FF);
 // str.a = ( ((65536 * 100) * tmp1) + (1 * tmp1) ) >> 16;
@@ -242,7 +242,7 @@ str.a = (str.a & 0x0000FFFF0000FFFF) * 42949672960001 >> 32;
 ----------
 Let's calculate the algorithm cost:
 
-```
+```c
 sum = *(long long *)num;
 sum = (sum & 0x0F0F0F0F0F0F0F0F) * 2561 >> 8;
 sum = (sum & 0x00FF00FF00FF00FF) * 6553601 >> 16;
