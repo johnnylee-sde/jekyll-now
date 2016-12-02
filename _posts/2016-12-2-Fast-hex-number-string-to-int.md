@@ -19,7 +19,7 @@ The code can key off of the 0x40 bit set, to locate the alphabetic hexadecimal d
 
 Shift that bit two times (into the 8 bit and 1 bit) and add to create the number 9 for the appropriate byte.
 
-Then we add to the hex digit and we should be off to the races with slight tweaks to the multiplication constants.
+Then we add to the hex digit and we should be off to the races with slight tweaks to the multiplication constants, since we're using base 16 not base 10 now for the digits.
 
 Here's the final algorithm:
 
