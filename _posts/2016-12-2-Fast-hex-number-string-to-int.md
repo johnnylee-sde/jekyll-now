@@ -11,11 +11,11 @@ The high alphabetic hexadecimal digits (`'A'-'F', 'a'-'f'`  0x41-0x46, 0x61-0x66
 
 If the code masks off the high nibble (4 bits) as it did when processing numeric strings, the code would be left with hexadecimal digits in the range 1-6, 0x01-0x06, when it should be in the range 10-15, 0x0A-0x0F.
 
-So the code needs to somehow add 9 to **ONLY** the hexadecimal digits in the range 0x41-0x46 and 0x61-0x66.
+So the code needs to add 9 to **ONLY** the hexadecimal digits in the range 0x41-0x46 and 0x61-0x66.
 
 # Concept #1
 
-Notice that all of the alphabetic hexadecimal digits have the 0x40 bit set.
+Notice that all of the high alphabetic hexadecimal digits have the 0x40 bit set.
 
 The code can key off of the 0x40 bit set, to locate the alphabetic hexadecimal digits.
 
@@ -44,5 +44,3 @@ ULL n2 = (n1 & 0x00FF00FF00FF00FFull) * 0x1000001 >> 16;
 unsigned long num = (n2 & 0x0000FFFF0000FFFFull) * 0x1000000000001 >> 32;
 
 ```
-
-
