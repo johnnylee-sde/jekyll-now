@@ -192,6 +192,12 @@ The post also included several alternative code solutions and a benchmark harnes
 
 Integrating my solution into the code, compiling, and then running the code showed the following results:
 
+Hints for analyzing chart results
+
+- Hover over bar/line to highlight entire bar/line
+- Click on bar/line to select bar/line
+- Click on algorithm in legend to select entire line or bars for algorithm
+
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script type="text/javascript">
 
