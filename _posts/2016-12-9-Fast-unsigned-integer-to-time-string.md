@@ -15,7 +15,7 @@ Convert the hours, minute, and seconds to string by bitwise-ORing with 0x30 wher
 and with 0x3A, ':' to position the colon separators.
 
 ```c
-uint32_t UlongToTimeStringFast(uint64_t secs, char *s)
+uint32_t UlongToTimeString(uint64_t secs, char *s)
 {
 	// divide by 3600 to calculate hours
 	uint64_t hours = (secs * 0x91A3) >> 27;
@@ -96,6 +96,32 @@ uint32_t naiveUlongToTimeString(uint64_t secs, char *s)
 
 ```
 
+Let's remove the divide operations and use multiply-shift instead:
+
+```c
+uint32_t fastUlongToTimeString(uint64_t secs, char *s)
+{
+	// divide by 3600 to calculate hours
+	uint64_t hours = (secs * 0x91A3) >> 27;
+	uint64_t xrem = secs - (hours * 3600);
+
+	// divide by 60 to calculate minutes
+	uint64_t mins = (xrem * 0x889) >> 17;
+	xrem = xrem - (mins * 60);
+
+	s[0] = (char)((hours / 10) + '0');
+	s[1] = (char)((hours % 10) + '0');
+	s[2] = ':';
+	s[3] = (char)((mins / 10) + '0');
+	s[4] = (char)((mins % 10) + '0');
+	s[5] = ':';
+	s[6] = (char)((xrem / 10) + '0');
+	s[7] = (char)((xrem % 10) + '0');
+
+	return 0;
+}
+```
+
 On to the results:
 
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
@@ -110,10 +136,10 @@ On to the results:
   function getData()
   {
     var data = google.visualization.arrayToDataTable([
-      ['algorithm', 'stdlib', 'naive', 'UlongToTimeString' ],
+      ['algorithm', 'stdlib', 'naive', 'fast', 'UlongToTimeString' ],
 
       // 64-bit x64 runtime results
-['time', 21565428, 354223,  197627  ]
+['time', 21565428, 354223, 319178, 197627  ]
 
     ]);
 
@@ -186,6 +212,8 @@ On to the results:
 The standard library solution is outclassed by the others.
 
 Not much to say about the naive solution. Reasonably small and fast.
+
+Remove the divide operations for the fast solution reduces runtime by about 10%.
 
 My solution turned out to be the fastest - about 56% of the naive solution's running time.
 
