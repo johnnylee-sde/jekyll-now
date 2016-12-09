@@ -260,8 +260,7 @@ Here are the results:
   }
 
 </script>
-  </head>
-  <body>
+
 <button onclick='showTable("Bar")'>Show Bar Chart</button><span> </span>
 <button onclick='showTable("Line")'>Show Line Chart</button><span> </span>
 <button onclick='showTable("Table")'>Show Table</button><span> </span>
