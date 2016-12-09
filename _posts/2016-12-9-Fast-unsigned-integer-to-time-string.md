@@ -189,7 +189,7 @@ On to the results:
   {
     if (null == g_columnsToHide)
     {
-      g_columnsToHide = [0, 2, 3];
+      g_columnsToHide = [0, 2, 3, 4];
     }
     else
     {
