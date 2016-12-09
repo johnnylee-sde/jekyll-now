@@ -472,8 +472,8 @@ Compiling and running the proposed faster code showed the following results:
 
 ### Faster Solution Performance
 
-The faster solution performs much better at smaller digits than the original solution - it's almost equal in performance except for 3-digit numbers.
+The faster solution performs much better at smaller digits than the original solution - it's almost equal in performance to the fastest solutions except for 3-digit numbers.
 
-I tried replacing the division by 100 in the facebook algorithms with multiply and shift-right operations to see if it would help performance.
+I also tried replacing the division by 100 in the facebook algorithms with equivalent multiply and shift-right operations to see if it would help performance.
 
-There does seem to be a reduction in runtime for larger digit numbers, but by 6-8 digit numbers, there's hardly any difference.
+There does seem to be a reduction in runtime in the modified facebook algorithms for larger digit numbers, but by 6-8 digit numbers, there's hardly any difference.
