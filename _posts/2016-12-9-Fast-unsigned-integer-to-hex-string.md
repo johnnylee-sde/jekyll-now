@@ -178,9 +178,6 @@ Here are the results:
 
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script type="text/javascript">
-// http://stackoverflow.com/questions/8785894/how-to-hide-column-in-google-charts-table
-// http://stackoverflow.com/questions/6061579/google-charts-hide-the-display-of-the-column-but-keep-the-underlying-data-for-u
-
   var g_columnsToHide = null;
   var g_chartShown = "Bar";
 
