@@ -17,7 +17,7 @@ title: Summary of fast conversion algorithms
 
 ## Links
 
-Evidently the technique I've been used is called `SWAR` - **S**IMD **W**ithin **A** **R**egister
+Evidently the technique I've used is called `SWAR` - **S**IMD **W**ithin **A** **R**egister.
 
 - [Hacker's Delight](http://hackersdelight.org/)
   - [Hacker's Delight miscellaneous material](http://www.hackersdelight.org/corres.txt)
